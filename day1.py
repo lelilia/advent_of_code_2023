@@ -44,10 +44,10 @@ def part_2(input_file):
     lines = lines.split("\n")
     return get_sum(lines)
 
-assert part_1("test_intput_1") == 142
+assert part_1("test_input_1") == 142
 
 print("Part 1:", part_1("input_1"))
 
-assert part_2("test_intput_1_b") == 281
+assert part_2("test_input_1_b") == 281
 
 print("Part 2:", part_2("input_1"))
