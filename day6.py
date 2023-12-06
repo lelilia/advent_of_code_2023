@@ -10,6 +10,44 @@ TEST_INPUT = "test_input_6"
 INPUT = "input_6"
 
 
+def is_win(speed, time, distance):
+    return speed * time > distance
+
+
+def get_wins(time, distance):
+    lower_limit = 0
+    upper_limit = time + 1
+    curr = upper_limit
+    while upper_limit - lower_limit > 1:
+        curr = (lower_limit + upper_limit) // 2
+        if is_win(curr, time - curr, distance):
+            upper_limit = curr
+        else:
+            lower_limit = curr
+
+    return time - 2 * upper_limit + 1
+
+
+def part_1(file):
+    records = get_input_lines(file)
+    times, distances = [[int(x) for x in re.findall(r"\d+", y)] for y in records]
+
+    result = 1
+    for i, time in enumerate(times):
+        distance = distances[i]
+        count_wins = get_wins(time, distance)
+        result *= count_wins
+    return result
+
+
+def part_2(file: int) -> int:
+    records = get_input_lines(file)
+    time, distance = [int(x.replace(" ", "").split(":")[1]) for x in records]
+
+    return get_wins(time, distance)
+
+
+####### brute force solution ######
 def win_one_race(time: int, distance: int) -> int:
     count_wins = 0
     if time % 2 == 0:
@@ -22,7 +60,7 @@ def win_one_race(time: int, distance: int) -> int:
     return count_wins
 
 
-def part_1(file: str) -> int:
+def part_1_brute_force(file: str) -> int:
     records = get_input_lines(file)
     times, distances = [[int(x) for x in re.findall(r"\d+", y)] for y in records]
 
@@ -34,7 +72,7 @@ def part_1(file: str) -> int:
     return result
 
 
-def part_2(file: int) -> int:
+def part_2_brute_force(file: int) -> int:
     records = get_input_lines(file)
     time, distance = [int(x.replace(" ", "").split(":")[1]) for x in records]
 
@@ -42,6 +80,11 @@ def part_2(file: int) -> int:
 
 
 if __name__ == "__main__":
+
+    assert get_wins(30, 200) == 9
+    assert get_wins(7, 9) == 4
+    assert get_wins(15, 40) == 8
+
     assert (result := part_1(TEST_INPUT)) == 288, f"Expected 288, got {result}."
 
     print("Part 1:", part_1(INPUT))
