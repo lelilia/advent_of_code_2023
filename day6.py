@@ -17,7 +17,6 @@ def is_win(speed, time, distance):
 def get_wins(time, distance):
     lower_limit = 0
     upper_limit = time + 1
-    curr = upper_limit
     while upper_limit - lower_limit > 1:
         curr = (lower_limit + upper_limit) // 2
         if is_win(curr, time - curr, distance):
