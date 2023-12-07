@@ -5,11 +5,38 @@ Advend of Code 2023
 
 import re
 from utils import get_input_lines
+from math import sqrt, floor, ceil
+
 
 TEST_INPUT = "test_input_6"
 INPUT = "input_6"
 
 
+def solve(time, distance):
+    start = ceil(time / 2 - sqrt(time**2 / 4 - distance) + 0.1)
+    return time - 2 * start + 1
+
+
+def part_1(file):
+    records = get_input_lines(file)
+    times, distances = [[int(x) for x in re.findall(r"\d+", y)] for y in records]
+
+    result = 1
+    for i, time in enumerate(times):
+        distance = distances[i]
+        count_wins = solve(time, distance)
+        result *= count_wins
+    return result
+
+
+def part_2(file: int) -> int:
+    records = get_input_lines(file)
+    time, distance = [int(x.replace(" ", "").split(":")[1]) for x in records]
+
+    return solve(time, distance)
+
+
+####### solution with search algorithm ####
 def is_win(speed, time, distance):
     return speed * time > distance
 
@@ -27,7 +54,7 @@ def get_wins(time, distance):
     return time - 2 * upper_limit + 1
 
 
-def part_1(file):
+def part_1_a(file):
     records = get_input_lines(file)
     times, distances = [[int(x) for x in re.findall(r"\d+", y)] for y in records]
 
@@ -39,7 +66,7 @@ def part_1(file):
     return result
 
 
-def part_2(file: int) -> int:
+def part_2_a(file: int) -> int:
     records = get_input_lines(file)
     time, distance = [int(x.replace(" ", "").split(":")[1]) for x in records]
 
@@ -79,6 +106,10 @@ def part_2_brute_force(file: int) -> int:
 
 
 if __name__ == "__main__":
+
+    assert (result := solve(30, 200)) == 9, f"Expected 9 got {result}"
+    assert solve(7, 9) == 4
+    assert solve(15, 40) == 8
 
     assert get_wins(30, 200) == 9
     assert get_wins(7, 9) == 4

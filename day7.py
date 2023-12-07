@@ -99,70 +99,56 @@ def get_type_with_joker(hand):
     return 0
 
 
-def compare_hands_1(hand_1, hand_2):
-    for i in range(5):
-        if ORDER_1[hand_1[0][i]] > ORDER_1[hand_2[0][i]]:
-            return 1
-        elif ORDER_1[hand_1[0][i]] < ORDER_1[hand_2[0][i]]:
-            return -1
+def compare_hands(hand_1, hand_2):
+    if get_type(hand_1[0]) > get_type(hand_2[0]):
+        return 1
+    elif get_type(hand_1[0]) < get_type(hand_2[0]):
+        return -1
+    else:
+        for i in range(5):
+            if ORDER_1[hand_1[0][i]] > ORDER_1[hand_2[0][i]]:
+                return 1
+            elif ORDER_1[hand_1[0][i]] < ORDER_1[hand_2[0][i]]:
+                return -1
     return 0
 
 
-def compare_hands_2(hand_1, hand_2):
-    for i in range(5):
-        if ORDER_2[hand_1[0][i]] > ORDER_2[hand_2[0][i]]:
-            return 1
-        elif ORDER_2[hand_1[0][i]] < ORDER_2[hand_2[0][i]]:
-            return -1
+def compare_hands_with_joker(hand_1, hand_2):
+    if get_type_with_joker(hand_1[0]) > get_type_with_joker(hand_2[0]):
+        return 1
+    elif get_type_with_joker(hand_1[0]) < get_type_with_joker(hand_2[0]):
+        return -1
+    else:
+        for i in range(5):
+            if ORDER_2[hand_1[0][i]] > ORDER_2[hand_2[0][i]]:
+                return 1
+            elif ORDER_2[hand_1[0][i]] < ORDER_2[hand_2[0][i]]:
+                return -1
     return 0
 
 
 def part_1(file):
     games = get_input_lines(file)
-    buckets = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
-    bucket_lengths = [0] * 7
-    for game in games:
-        hand, bid = game.strip().split(" ")
-        bid = int(bid)
-        hand_type = get_type(hand)
-        buckets[hand_type].append([hand, bid])
-        bucket_lengths[hand_type] += 1
-
+    games = [game.strip().split(" ") for game in games]
+    games = sorted(games, key=cmp_to_key(compare_hands))
     winnings = 0
-    prev_ranks = 1
-    for key, bucket in buckets.items():
-        if bucket:
-            sorted_bucket = sorted(bucket, key=cmp_to_key(compare_hands_1))
-            for i, game in enumerate(sorted_bucket):
-                winnings += game[1] * (prev_ranks + i)
-        prev_ranks += bucket_lengths[key]
+    for i, game in enumerate(games):
+        winnings += int(game[1]) * (i + 1)
     return winnings
 
 
 def part_2(file):
     games = get_input_lines(file)
-    buckets = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
-    bucket_lengths = [0] * 7
-
-    for game in games:
-        hand, bid = game.strip().split(" ")
-        bid = int(bid)
-        hand_type = get_type_with_joker(hand)
-        buckets[hand_type].append([hand, bid])
-        bucket_lengths[hand_type] += 1
-
+    games = [game.strip().split(" ") for game in games]
+    games = sorted(games, key=cmp_to_key(compare_hands_with_joker))
     winnings = 0
-    prev_ranks = 1
-    for key, bucket in buckets.items():
-        if bucket:
-            sorted_bucket = sorted(bucket, key=cmp_to_key(compare_hands_2))
-            for i, game in enumerate(sorted_bucket):
-                winnings += game[1] * (prev_ranks + i)
-        prev_ranks += bucket_lengths[key]
+    for i, game in enumerate(games):
+        winnings += int(game[1]) * (i + 1)
     return winnings
 
 
 if __name__ == "__main__":
+
     # Part 1
     assert (get_type("AAAAA")) == 6
     assert (get_type("AA8AA")) == 5
@@ -172,9 +158,7 @@ if __name__ == "__main__":
     assert (get_type("A23A4")) == 1
     assert (get_type("23456")) == 0
     assert (
-        result := sorted(
-            [["KK677", 28], ["KTJJT", 220]], key=cmp_to_key(compare_hands_1)
-        )
+        result := sorted([["KK677", 28], ["KTJJT", 220]], key=cmp_to_key(compare_hands))
     ) == (
         expected := [["KTJJT", 220], ["KK677", 28]]
     ), f"Expected {expected} got {result}"
