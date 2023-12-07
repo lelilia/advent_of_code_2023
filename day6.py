@@ -5,7 +5,7 @@ Advend of Code 2023
 
 import re
 from utils import get_input_lines
-from math import sqrt, floor, ceil
+from math import sqrt, ceil
 
 
 TEST_INPUT = "test_input_6"
