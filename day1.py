@@ -2,13 +2,16 @@
 Advent of Code 2023 - Day 1
 """
 
+
 def get_input_lines(filename):
     with open(filename, "r") as f:
         return f.readlines()
 
+
 def get_input(filename):
     with open(filename, "r") as f:
         return f.read()
+
 
 def replace_number_words(lines):
     lines = lines.replace("one", "one1one")
@@ -22,6 +25,7 @@ def replace_number_words(lines):
     lines = lines.replace("nine", "nine9nine")
     return lines
 
+
 def get_sum(lines):
     sum = 0
     for line in lines:
@@ -34,15 +38,18 @@ def get_sum(lines):
         sum += int(first + last)
     return sum
 
+
 def part_1(input_file):
     lines = get_input_lines(input_file)
     return get_sum(lines)
+
 
 def part_2(input_file):
     lines = get_input(input_file)
     lines = replace_number_words(lines)
     lines = lines.split("\n")
     return get_sum(lines)
+
 
 assert part_1("test_input_1") == 142
 

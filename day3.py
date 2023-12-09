@@ -7,16 +7,18 @@ INPUT = "input_3"
 
 def find_number(schema, i, j):
     start_j = j
-    while schema[i,j] in "1234567890":
+    while schema[i, j] in "1234567890":
         j += 1
     return schema[i, start_j:j], start_j, j
+
 
 def check_for_symbols(schema, i, start_j, end_j):
 
     for symbol in "$/-+@&=%#*":
-        if symbol in schema[i-1:i+2, start_j-1:end_j+1]:
+        if symbol in schema[i - 1 : i + 2, start_j - 1 : end_j + 1]:
             return True
     return False
+
 
 def get_schema(file):
     input = get_input(file)
@@ -24,6 +26,7 @@ def get_schema(file):
     schema_shape = schema.shape
     schema = np.pad(schema, 1, "constant", constant_values=".")
     return schema, schema_shape
+
 
 def get_numbers(file):
     input = get_input(file)
@@ -38,7 +41,7 @@ def get_numbers(file):
     i = j = 1
     while i <= schema_shape[0]:
         while j <= schema_shape[1]:
-            if schema[i,j] in "1234567890":
+            if schema[i, j] in "1234567890":
                 number, start_j, j = find_number(schema, i, j)
                 number = int("".join(number))
                 if check_for_symbols(schema, i, start_j, j):
@@ -53,6 +56,7 @@ def get_numbers(file):
         j = 1
     return numbers, number_pos, number_index
 
+
 def part_1(file):
     schema, schema_shape = get_schema(file)
 
@@ -60,7 +64,7 @@ def part_1(file):
     i = j = 1
     while i <= schema_shape[0]:
         while j <= schema_shape[1]:
-            if schema[i,j] in "1234567890":
+            if schema[i, j] in "1234567890":
                 number, start_j, j = find_number(schema, i, j)
                 number = int("".join(number))
                 if check_for_symbols(schema, i, start_j, j):
@@ -69,6 +73,7 @@ def part_1(file):
         i += 1
         j = 1
     return sum
+
 
 def part_2(file):
     schema, schema_shape = get_schema(file)
@@ -84,8 +89,8 @@ def part_2(file):
         value_1 = None
         index_1 = None
         value_2 = None
-        for s in range(x-1, x + 2):
-            for t in range(y-1, y+2):
+        for s in range(x - 1, x + 2):
+            for t in range(y - 1, y + 2):
                 if (s, t) in number_pos:
                     if not value_1:
                         index_1 = number_pos[s, t]
@@ -98,7 +103,6 @@ def part_2(file):
         if value_1 and value_2:
             sum += value_1 * value_2
     return sum
-
 
 
 if __name__ == "__main__":

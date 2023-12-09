@@ -1,19 +1,15 @@
+RULES_1 = {"red": 12, "green": 13, "blue": 14}
 
-RULES_1 = {
-    "red": 12,
-    "green": 13,
-    "blue": 14
-}
 
 def get_input(filename):
     with open(filename, "r") as f:
         return f.readlines()
 
+
 def part_1(filename, rules):
     games = get_input(filename)
 
     sum_correct_ids = 0
-
 
     for game in games:
         is_possible = True
@@ -33,11 +29,11 @@ def part_1(filename, rules):
             sum_correct_ids += game_id
     return sum_correct_ids
 
+
 def part_2(filename):
     games = get_input(filename)
 
     sum_powers = 0
-
 
     for game in games:
         is_possible = True
@@ -60,6 +56,7 @@ def part_2(filename):
             powers *= value
         sum_powers += powers
     return sum_powers
+
 
 assert part_1("test_input_2", RULES_1) == 8
 
