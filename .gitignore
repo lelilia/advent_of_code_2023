@@ -1,6 +1,7 @@
 # advent of code input files
 input*
 test_input*
+copy*
 
 
 # Byte-compiled / optimized / DLL files
