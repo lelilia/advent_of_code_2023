@@ -24,6 +24,10 @@ def prime_factorization(n):
         factors.append(n)
     return factors
 
+def print_map(map):
+    for row in map:
+        print("".join(row))
+    print()
 
 if __name__ == "__main__":
     assert (result := prime_factorization(3)) == [3], f"Expected [3] got {result}"
